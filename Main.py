@@ -1,24 +1,76 @@
 import pandas as pd
-import numpy as np
-pd.options.display.float_format = '{:.2f}'.format
-np.set_printoptions(suppress=True)
+import matplotlib.pyplot as plt
+from sklearn.preprocessing import StandardScaler
+from sklearn.cluster import KMeans
+from itertools import cycle
 
+# load the game dataset from csv file
 file_path = 'Video_Games.csv'
-result = pd.read_csv(file_path)
-#print(result['Name'].values)
+game_dataset = pd.read_csv(file_path)
 
-plottingDataGlobalSales = result['Global_Sales'].values
-plottingDataCriticScores = result['Critic_Score'].values
-plottingDataNames = result['Name'].values
+# select relevant columns for clustering
+selected_columns = ['Name', 'Genre', 'User_Score', 'Critic_Score']
+game_subset = game_dataset[selected_columns]
 
-indices_to_remove = [i for i in range(len(plottingDataGlobalSales)) if plottingDataCriticScores[i] != plottingDataCriticScores[i]]
+# convert 'tbd' values to NaN and convert columns to numeric
+game_subset['User_Score'] = pd.to_numeric(game_subset['User_Score'], errors='coerce')
+game_subset['Critic_Score'] = pd.to_numeric(game_subset['Critic_Score'], errors='coerce')
 
-plottingDataGlobalSales = [v for i, v in enumerate(plottingDataGlobalSales) if i not in indices_to_remove]
-plottingDataCriticScores = [v for i, v in enumerate(plottingDataCriticScores) if i not in indices_to_remove]
-plottingDataNames = [v for i, v in enumerate(plottingDataNames) if i not in indices_to_remove]
+# calculate the average score
+game_subset['Global_Score'] = (game_subset['User_Score'] + game_subset['Critic_Score']) / 2
 
-for j in range(len(plottingDataGlobalSales)):
-    print(plottingDataNames[j], end=' ')
-    print(plottingDataGlobalSales[j], end=' ')
-    print(plottingDataCriticScores[j])
+# drop rows with missing values in the selected columns
+game_subset = game_subset.dropna(subset=['User_Score', 'Critic_Score'])
 
+# standardize the scores for clustering
+scaler = StandardScaler()
+game_subset[['User_Score', 'Critic_Score', 'Global_Score']] = scaler.fit_transform(game_subset[['User_Score', 'Critic_Score', 'Global_Score']])
+
+# get unique genres
+unique_genres = game_subset['Genre'].unique()
+
+# create a color cycle for plotting
+colors = cycle('bgrcmyk')
+
+# initialize a figure for plotting
+fig, ax = plt.subplots(figsize=(15, 10))
+
+# initialize a dictionary to track assigned clusters for each genre
+assigned_clusters = {}
+
+# iterate over each genre and perform kmeans clustering
+for genre, color in zip(unique_genres, colors):
+    # filter games of the current genre
+    genre_subset = game_subset[game_subset['Genre'] == genre]
+
+    # check if there are enough games for clustering
+    if len(genre_subset) > 1:
+        # check if the genre has already been assigned a cluster
+        if genre in assigned_clusters:
+            cluster_index = assigned_clusters[genre]
+        else:
+            # perform kmeans clustering for the current genre
+            kmeans = KMeans(n_clusters=1, random_state=42)
+            genre_subset['cluster'] = kmeans.fit_predict(genre_subset[['Global_Score', 'User_Score']])
+
+            # assign a unique color to the cluster
+            cluster_color = next(colors)
+
+            # scatter plot for each cluster
+            cluster_index = 0  # since there's only one cluster per genre
+            ax.scatter(
+                genre_subset['Global_Score'],
+                genre_subset['User_Score'],
+                label=f'{genre}',
+                color=cluster_color,
+            )
+
+            # update the assigned cluster for the genre
+            assigned_clusters[genre] = cluster_index
+
+# set plot labels and title
+ax.set_title('Game Clusters Based on Global Scores by Genre')
+ax.set_xlabel('Global Score')
+ax.set_ylabel('User Score')
+ax.legend()
+plt.show()
