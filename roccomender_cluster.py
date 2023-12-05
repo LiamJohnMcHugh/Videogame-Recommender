@@ -118,7 +118,7 @@ def cluster():
             label=f'{genre} (User Input)',
             marker='X',
             s=100,
-            color='black'  # you can customize the color for user input data
+            color='black'
         )
 
     # set plot labels and title
@@ -144,7 +144,7 @@ def cluster():
             label=f'{genre} (User Input)',
             marker='X',
             s=100,
-            color='black'  # you can customize the color for user input data
+            color='black'
         )
 
     # iterate over each genre and perform kmeans clustering
@@ -195,10 +195,10 @@ def cluster():
     recommended_game = game_subset.loc[
         game_subset['Global_Score'].sub(average_score).abs().idxmin(), 'Name']
 
+    messagebox.showinfo("Recommended Game", f"Based on preferences, your recommended game is {recommended_game}", icon='info')
     print(f"\nBased on your input, we recommend the game: {recommended_game}")
 
     plt.show()
-
 
 def run_function():
     # placeholder for the function to be called when the "Run" button is clicked
