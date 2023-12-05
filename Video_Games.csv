@@ -1,4 +1,5 @@
 Name,Platform,Year_of_Release,Genre,Publisher,NA_Sales,EU_Sales,JP_Sales,Other_Sales,Global_Sales,Critic_Score,Critic_Count,User_Score,User_Count,Developer,Rating
+Wii Sports,Wii,2006,Sports,Nintendo,41.36,28.96,3.77,8.45,82.53,76,51,8,322,Nintendo,E
 Super Mario Bros.,NES,1985,Platform,Nintendo,29.08,3.58,6.81,0.77,40.24,,,,,,
 Mario Kart Wii,Wii,2008,Racing,Nintendo,15.68,12.76,3.79,3.29,35.52,82,73,8.3,709,Nintendo,E
 Wii Sports Resort,Wii,2009,Sports,Nintendo,15.61,10.93,3.28,2.95,32.77,80,73,8,192,Nintendo,E
@@ -1048,6 +1049,7 @@ Kanshuu Nippon Joushikiryoku Kentei Kyoukai: Imasara Hito ni wa Kikenai Otona no
 Tetris Worlds,GBA,2001,Puzzle,THQ,1.25,0.39,0,0.06,1.71,65,10,tbd,,3d6 Games,E
 Imagine: Teacher,DS,2008,Simulation,Ubisoft,0.7,0.82,0,0.19,1.71,,,tbd,,Magic Pockets,E
 Call of Duty: Black Ops 3,X360,2015,Shooter,Activision,1.14,0.4,0,0.16,1.71,,,,,,
+Deal or No Deal,DS,2007,Misc,Mindscape,1.15,0.4,0,0.15,1.7,20,13,1.9,41,Artefacts Studio,E
 FIFA Soccer 10,PS2,2009,Sports,Electronic Arts,0.23,0.24,0,1.23,1.7,,,8.4,9,EA Sports,E
 Portal 2,PS3,2011,Shooter,Valve,0.83,0.6,0.02,0.24,1.7,95,54,8.4,937,Valve Software,E10+
 Super Puyo Puyo,SNES,1993,Puzzle,Banpresto,0,0,1.69,0.01,1.7,,,,,,
